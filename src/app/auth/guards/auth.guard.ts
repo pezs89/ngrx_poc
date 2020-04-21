@@ -10,7 +10,7 @@ import { Observable } from 'rxjs';
 
 import { AppState } from '../../_store/app.reducer';
 import * as fromAuth from '../store';
-import { tap } from 'rxjs/operators';
+import { tap, map } from 'rxjs/operators';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
@@ -20,11 +20,14 @@ export class AuthGuard implements CanActivate {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<boolean> {
-    return this.store.select(fromAuth.isLoggedIn).pipe(
-      tap((isLoggedIn) => {
-        if (isLoggedIn) {
-          this.router.navigateByUrl('/courses');
+    return this.store.pipe(
+      select(fromAuth.isLoggedIn),
+      map((isLoggedIn) => {
+        console.log(route, state);
+        if (!isLoggedIn) {
+          this.router.navigate(['/']);
         }
+        return true;
       })
     );
   }

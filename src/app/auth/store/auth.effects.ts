@@ -15,18 +15,12 @@ export class AuthEffects {
         const { email, password } = action.user;
         return this.authService.login(email, password).pipe(
           map((user) => fromAuth.loginSuccess({ user })),
+          tap(() => this.router.navigate(['/courses'])),
           catchError(() => of(fromAuth.loginFailure()))
         );
       })
     )
   );
-
-  // loginSuccess$ = createEffect(() =>
-  //   this.actions$.pipe(
-  //     ofType(fromAuth.loginSuccess),
-  //     tap(() => this.router.navigate(['courses']))
-  //   )
-  // );
 
   constructor(
     private actions$: Actions,
