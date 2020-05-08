@@ -7,6 +7,7 @@ import {
 } from '@angular/router';
 import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs';
+import * as fromRouter from '@ngrx/router-store';
 
 import { AppState } from '../../_store/app.reducer';
 import * as fromAuth from '../store';
@@ -22,7 +23,7 @@ export class AuthGuard implements CanActivate {
   ): Observable<boolean> {
     return this.store.pipe(
       select(fromAuth.isLoggedIn),
-      map((isLoggedIn) => {
+      map(isLoggedIn => {
         console.log(route, state);
         if (!isLoggedIn) {
           this.router.navigate(['/']);

@@ -11,13 +11,23 @@ export class AuthEffects {
   login$ = createEffect(() =>
     this.actions$.pipe(
       ofType(fromAuth.loginRequest),
-      exhaustMap((action) => {
+      exhaustMap(action => {
         const { email, password } = action.user;
         return this.authService.login(email, password).pipe(
-          map((user) => fromAuth.loginSuccess({ user })),
+          map(user => fromAuth.loginSuccess({ user })),
           tap(() => this.router.navigate(['/courses'])),
           catchError(() => of(fromAuth.loginFailure()))
         );
+      })
+    )
+  );
+
+  logout$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(fromAuth.logoutRequest),
+      exhaustMap(() => {
+        this.router.navigate(['/']);
+        return of(fromAuth.logoutSuccess());
       })
     )
   );

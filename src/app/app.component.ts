@@ -24,12 +24,7 @@ export class AppComponent implements OnInit {
   constructor(private router: Router, private store: Store<AppState>) {}
 
   ngOnInit() {
-    // const user = localStorage.getItem('user');
-    // if (!!user) {
-    //   const parsedUser: Login = JSON.parse(user);
-    //   this.store.dispatch(fromAuth.loginRequest({ user: parsedUser }));
-    // }ß
-    this.router.events.subscribe((event) => {
+    this.router.events.subscribe(event => {
       switch (true) {
         case event instanceof NavigationStart: {
           this.loading = true;
@@ -52,6 +47,6 @@ export class AppComponent implements OnInit {
   }
 
   logout() {
-    this.store.dispatch(fromAuth.logout());
+    this.store.dispatch(fromAuth.logoutRequest());
   }
 }
